@@ -1,1 +1,1 @@
-web: gunicorn run:garbage
+web: gunicorn run:garbage-detector
