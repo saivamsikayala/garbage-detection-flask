@@ -44,7 +44,7 @@ def home():
 			labels_file=LABELS_FILE,
 			mean_file=MEAN_FILE, 
 		)
-
+		print(filepath)
 		return render_template('show.html', classifications=classifications)
 	else:
 		return render_template('home.html')

@@ -92,6 +92,8 @@ def getPredictionsFor(caffemodel,deploy_file,image_files,labels_file,mean_file):
                 print('Not Garbage!')
             
             out_ = getSegmentedImage(test_image, probMap,thresh)
+            filepath = os.path.join(output_folder,
+                                    datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + '.jpg'
             out_.save(output_folder + '/output_image.jpg')
     return classifications
 

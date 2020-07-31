@@ -5,7 +5,19 @@
 	<title>Classify Image</title>
 </head>
 <body>
-	<img src="../static/output_image.jpg" alt="Italian Trulli">
+	<!-- <img src="../static/output_image.jpg" alt="Italian Trulli"> -->
 	{{classifications}}
 </body>
 </html>
+<script>
+	function LoadImage() {
+		var img = new Image(),
+		x = document.getElementById("stream");
+
+		img.onload = function() {
+		x.src = img.src;
+		};
+
+		img.src = '../static/output_image.jpg';
+	}
+</script>
