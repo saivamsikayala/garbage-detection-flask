@@ -120,7 +120,7 @@ def main():
     images = []
     #print(args['image'])
     sample = Image.open(args['image'])
-    print(500000000000000)
+    #print(500000000000000)
     images.append(sample)
     getPredictionsFor(args['caffemodel'],args['deploy_file'],images,args['labels'],args['mean'])
 
