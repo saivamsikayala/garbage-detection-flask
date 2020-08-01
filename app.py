@@ -1,7 +1,7 @@
 import caffe
 import os, datetime
 from flask import Flask, render_template, request
-from .forms import ImageForm
+#from .forms import ImageForm
 from .classifier import getPredictionsFor
 from PIL import Image
 from flask import jsonify
@@ -30,8 +30,8 @@ mean, net = prepareNet()
 
 class home(Resource):
 	#form = ImageForm()
-	#def options (self):
-	#	return {'Allow' : 'PUT' }, 200, {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods' : 'POST',  "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods" }
+	def options (self):
+		return {'Allow' : 'POST' }, 200, {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods' : 'POST',  "Access-Control-Allow-Headers": "Content-Type" }
 
 	def post(self):
 		parser = reqparse.RequestParser()
