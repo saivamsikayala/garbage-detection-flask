@@ -9,7 +9,7 @@ from . import settings
 from flask_restful import Resource, Api, reqparse
 from base64 import b64decode
 from flask_cors import CORS
-from flast_restful.utils.cors import crossdomain
+from flask_restful.utils.cors import crossdomain
 
 app = Flask(__name__)
 CORS(app)
