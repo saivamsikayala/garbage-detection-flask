@@ -10,23 +10,7 @@ import time
 from google.protobuf import text_format
 import numpy as np
 
-def gatherImages(folder,imageNames=None):
-    images = []
-    names = []
-    files = os.listdir(folder)
-    total = len(files)
-    print('Total %d images in folder %s' % (total,folder))
-    for i in os.listdir(folder):
-        try:
-            if imageNames is None or i in imageNames:
-                example_image = folder+'/'+i
-                input_image = Image.open(example_image)
-                images.append(input_image)
-                names.append(i)
-        except:
-            pass
 
-    return images,names
 
 def resizeForFCN(image,size):
     #image = Image.open(image)
@@ -71,9 +55,9 @@ def getPredictionsFor(caffemodel,deploy_file,image_files,labels_file,mean_file):
     #print(len(image_files))
     for i in range(len(image_files)):
             test_image = resizeForFCN(image_files[i],size)
-            print(test_image)
+            #print(test_image)
             in_ = np.array(test_image,dtype = np.float32)
-            print(in_)
+            #print(in_)
             in_ = in_[:,:,::-1]
             in_ -= np.array(mean.mean(1).mean(1))
             in_ = in_.transpose((2,0,1))
