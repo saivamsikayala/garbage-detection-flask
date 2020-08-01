@@ -22,7 +22,7 @@ def prepareNet():
 
 mean, net = prepareNet()
 
-def home(Resource):
+class home(Resource):
 	#form = ImageForm()
 	def post(self):
 		parser = reqparse.RequestParser()
