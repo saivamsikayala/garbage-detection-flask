@@ -19,7 +19,7 @@ def prepareNet():
 	net = caffe.Net(settings.DEPLOY_FILE,settings.CAFFE_MODEL,caffe.TEST)
 	return (mean, net)
 
-#mean, net = prepareNet()
+mean, net = prepareNet()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
