@@ -67,7 +67,7 @@ def getSegmentedImage(test_image, probMap,thresh):
 def getPredictionsFor(image_files,net, mean):
     size = 4
     thresh = 0.999
-    #output_folder = 'static'
+    output_folder = 'static'
 
     classifications = []
     #print(len(image_files))
@@ -94,12 +94,16 @@ def getPredictionsFor(image_files,net, mean):
                 #print('Not Garbage!')
             
             out_ = getSegmentedImage(test_image, probMap,thresh)
-            url = S3Connection.upload(out_)
-            #filepath = os.path.join(output_folder,
-            #                        datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + '.jpg'
-            #out_.save(output_folder + '/output_image.jpg')
-    return {'classification': classifications, 'url':url}
+            filepath = os.path.join(output_folder,
+                                    datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + '.jpg'
+            out_.save(output_folder + '/output_image.jpg')
+            
+    return {'classification': classifications, 'image': S3Connection.upload(filepath)}
 
+def toByteArray(self, image):
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format='JPEG')
+        return imgByteArr.getvalue()
 
 def main():
     parser = argparse.ArgumentParser(description="Garbage det model")

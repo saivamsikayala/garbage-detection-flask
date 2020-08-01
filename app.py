@@ -7,16 +7,10 @@ from flask import jsonify
 import settings
 import caffe
 
-# def pre_process(filepath) :
-# 	size=(64, 64)
-# 	im = Image.open(filepath)
-# 	im = im.convert('L')
-# 	return im.resize(size)	
 
 app = Flask(__name__)
 app.debug = True
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
-
 
 def prepareNet():
 	proto_data = open(settings.MEAN_FILE, "rb").read()
@@ -25,8 +19,7 @@ def prepareNet():
 	net = caffe.Net(settings.DEPLOY_FILE,settings.CAFFE_MODEL,caffe.TEST)
 	return (mean, net)
 
-mean, net = prepareNet()
-
+#mean, net = prepareNet()
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -43,11 +36,14 @@ def home():
 		image_files.append(sample)
 		#print(image_files)
 		response = getPredictionsFor(image_files,net, mean)
+
+		
 		#print(filepath)
-		print(d)
-		return jsonify(d)
+		print(response)
+		return jsonify(response)
 	else:
 		return render_template('home.html')
 
+
 if __name__== "__main__":
-        app.run(host="0.0.0.0")
+	app.run(host="0.0.0.0")
