@@ -1,26 +1,30 @@
-import os, classifier, datetime
+import os, datetime
 from flask import Flask, render_template, request
 from forms import ImageForm
+from classifier import getPredictionsFor
 from PIL import Image
+from flask import jsonify
+import settings
 
-BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-CAFFE_MODEL = BASE_DIR + "/garbnet_fcn.caffemodel"
-DEPLOY_FILE = BASE_DIR + "/deploy_garbnet.prototxt"
-#MEAN = BASE_DIR + "/mean.binaryproto"
-MEAN_FILE = BASE_DIR + "/garbnet_mean.binaryproto"
-#LABELS_FILE = BASE_DIR + "/labels.txt"
-LABELS_FILE = None
-UPLOAD_FOLDER = BASE_DIR + "/uploads/"
-
-def pre_process(filepath) :
-	size=(64, 64)
-	im = Image.open(filepath)
-	im = im.convert('L')
-	return im.resize(size)	
+# def pre_process(filepath) :
+# 	size=(64, 64)
+# 	im = Image.open(filepath)
+# 	im = im.convert('L')
+# 	return im.resize(size)	
 
 app = Flask(__name__)
 app.debug = True
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+
+
+def prepareNet():
+	proto_data = open(settings.MEAN_FILE, "rb").read()
+	a = caffe.io.caffe_pb2.BlobProto.FromString(proto_data)
+	mean  = caffe.io.blobproto_to_array(a)[0]
+	net = caffe.Net(settings.DEPLOY_FILE,settings.CAFFE_MODEL,caffe.TEST)
+	return (mean, net)
+
+mean, net = prepareNet()
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -37,15 +41,9 @@ def home():
 		image_files = []
 		image_files.append(sample)
 		#print(image_files)
-		classifications = classifier.getPredictionsFor(
-			caffemodel=CAFFE_MODEL, 
-			deploy_file=DEPLOY_FILE, 
-			image_files=image_files, 
-			labels_file=LABELS_FILE,
-			mean_file=MEAN_FILE, 
-		)
-		print(filepath)
-		return render_template('show.html', classifications=classifications)
+		response = getPredictionsFor(net, mean)
+		#print(filepath)
+		return jsonify(d)
 	else:
 		return render_template('home.html')
 

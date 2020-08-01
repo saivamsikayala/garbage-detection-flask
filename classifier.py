@@ -9,24 +9,25 @@ import argparse
 import time
 from google.protobuf import text_format
 import numpy as np
+from S3utils import upload
 
-def gatherImages(folder,imageNames=None):
-    images = []
-    names = []
-    files = os.listdir(folder)
-    total = len(files)
-    print('Total %d images in folder %s' % (total,folder))
-    for i in os.listdir(folder):
-        try:
-            if imageNames is None or i in imageNames:
-                example_image = folder+'/'+i
-                input_image = Image.open(example_image)
-                images.append(input_image)
-                names.append(i)
-        except:
-            pass
+# def gatherImages(folder,imageNames=None):
+#     images = []
+#     names = []
+#     files = os.listdir(folder)
+#     total = len(files)
+#     print('Total %d images in folder %s' % (total,folder))
+#     for i in os.listdir(folder):
+#         try:
+#             if imageNames is None or i in imageNames:
+#                 example_image = folder+'/'+i
+#                 input_image = Image.open(example_image)
+#                 images.append(input_image)
+#                 names.append(i)
+#         except:
+#             pass
 
-    return images,names
+#     return images,names
 
 def resizeForFCN(image,size):
     #image = Image.open(image)
@@ -63,17 +64,18 @@ def getSegmentedImage(test_image, probMap,thresh):
     return Image.fromarray(or_im_ar)
     
     
-def getPredictionsFor(caffemodel,deploy_file,image_files,labels_file,mean_file):
+def getPredictionsFor(net, mean):
     size = 4
     thresh = 0.999
-    output_folder = 'static'
+    #output_folder = 'static'
+
     classifications = []
     #print(len(image_files))
     for i in range(len(image_files)):
             test_image = resizeForFCN(image_files[i],size)
-            print(test_image)
+            #print(test_image)
             in_ = np.array(test_image,dtype = np.float32)
-            print(in_)
+            #print(in_)
             in_ = in_[:,:,::-1]
             in_ -= np.array(mean.mean(1).mean(1))
             in_ = in_.transpose((2,0,1))
@@ -86,27 +88,17 @@ def getPredictionsFor(caffemodel,deploy_file,image_files,labels_file,mean_file):
             #print(names[i]+'...',)
             if len(np.where(probMap>thresh)[0]) > 0:
                 classifications.append("Garbage!")
-                print('Garbage!')
+                #print('Garbage!')
             else:
                 classifications.append("Not Garbage!")
-                print('Not Garbage!')
+                #print('Not Garbage!')
             
             out_ = getSegmentedImage(test_image, probMap,thresh)
-            filepath = os.path.join(output_folder,
-                                    datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + '.jpg'
-            out_.save(output_folder + '/output_image.jpg')
-    return classifications
-
-
-mean_filename='garbnet_mean.binaryproto'
-deploy_filename = 'deploy_garbnet.prototxt'
-caffemodel_file = 'garbnet_fcn.caffemodel'
-
-proto_data = open(mean_filename, "rb").read()
-a = caffe.io.caffe_pb2.BlobProto.FromString(proto_data)
-mean  = caffe.io.blobproto_to_array(a)[0]
-
-net = caffe.Net(deploy_filename,caffemodel_file,caffe.TEST)
+            url = upload(out_)
+            #filepath = os.path.join(output_folder,
+            #                        datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + '.jpg'
+            #out_.save(output_folder + '/output_image.jpg')
+    return {'classification': classifications, 'url':url}
 
 
 def main():
