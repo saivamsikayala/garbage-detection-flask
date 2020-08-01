@@ -8,6 +8,7 @@ MEAN_FILE = BASE_DIR + "/garbnet_mean.binaryproto"
 #LABELS_FILE = BASE_DIR + "/labels.txt"
 LABELS_FILE = None
 UPLOAD_FOLDER = BASE_DIR + "/uploads/"
+OUTPUT_FOLDER = BASE_DIR + "/output/"
 
 AWS_ACCESS_KEY_ID = 'XUGWG5ASJKCLWYSP6FKJ'
 AWS_SECRET_ACCESS_KEY = 'T6iOjcZdINwV0mDFlOd3rOcb8asYedLxml5qlORvJPI'

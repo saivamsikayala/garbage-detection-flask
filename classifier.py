@@ -10,6 +10,7 @@ import time
 from google.protobuf import text_format
 import numpy as np
 from .S3utils import S3Connection
+from . import settings
 
 # def gatherImages(folder,imageNames=None):
 #     images = []
@@ -67,7 +68,6 @@ def getSegmentedImage(test_image, probMap,thresh):
 def getPredictionsFor(image_files,net, mean):
     size = 4
     thresh = 0.999
-    output_folder = 'static'
 
     classifications = []
     #print(len(image_files))
@@ -94,9 +94,9 @@ def getPredictionsFor(image_files,net, mean):
                 #print('Not Garbage!')
             
             out_ = getSegmentedImage(test_image, probMap,thresh)
-            filepath = os.path.join(output_folder,
+            filepath = os.path.join(settings.OUTPUT_FOLDER,
                                     datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + '.jpg'
-            out_.save(output_folder + '/output_image.jpg')
+            out_.save(filepath)
             
     return {'classification': classifications, 'image': S3Connection.upload(filepath)}
 
