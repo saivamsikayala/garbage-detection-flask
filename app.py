@@ -7,6 +7,7 @@ from PIL import Image
 from flask import jsonify
 from . import settings
 from flask_restful import Resource, Api, reqparse
+from base64 import b64decode
 
 app = Flask(__name__)
 app.debug = True
@@ -26,7 +27,7 @@ class home(Resource):
 	#form = ImageForm()
 	def post(self):
 		parser = reqparse.RequestParser()
-		parser.add_argument('image')
+		parser.add_argument('data')
 		parser.add_argument('width', type=int)
 		parser.add_argument('height', type=int)
 		parser.add_argument('mode', type=str)
@@ -35,7 +36,7 @@ class home(Resource):
 		mode = parser['mode']
 		width = parser['width']
 		height = parser['height']
-		image_data = parser['image']
+		image_data = b64decode(parser['data'])
 
 		# extension = os.path.splitext(image_file.filename)[1]
 		# filepath = os.path.join(settings.UPLOAD_FOLDER, \
