@@ -11,11 +11,12 @@ from base64 import b64decode
 from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 app.debug = True
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 api = Api(app)
 #CORS(app, resources={r"/api/*":{"origins":["localhost", 'smart-bins-vitb.web.app']}})
-cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+#cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 def prepareNet():
 	proto_data = open(settings.MEAN_FILE, "rb").read()
