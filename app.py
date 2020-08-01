@@ -12,11 +12,6 @@ MEAN_FILE = BASE_DIR + "/garbnet_mean.binaryproto"
 LABELS_FILE = None
 UPLOAD_FOLDER = BASE_DIR + "/uploads/"
 
-def pre_process(filepath) :
-	size=(64, 64)
-	im = Image.open(filepath)
-	im = im.convert('L')
-	return im.resize(size)	
 
 app = Flask(__name__)
 app.debug = True
