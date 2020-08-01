@@ -1,7 +1,7 @@
 import os, datetime
 from flask import Flask, render_template, request
-from forms import ImageForm
-from classifier import getPredictionsFor
+from .forms import ImageForm
+from .classifier import getPredictionsFor
 from PIL import Image
 from flask import jsonify
 import settings
