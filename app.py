@@ -1,3 +1,4 @@
+import caffe
 import os, datetime
 from flask import Flask, render_template, request
 from .forms import ImageForm
@@ -5,7 +6,6 @@ from .classifier import getPredictionsFor
 from PIL import Image
 from flask import jsonify
 from . import settings
-import caffe
 
 
 app = Flask(__name__)
