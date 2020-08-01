@@ -23,7 +23,7 @@ class S3utils():
         #data = pilimage #self.toByteArray(pilimage)
         #print(settings.AWS_STORAGE_BUCKET_NAME, filename)
         #self._client.put_object(ACL='public_read', Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=filename, Body=data)
-        self._client.upload_file(filepath, settings.AWS_STORAGE_BUCKET_NAME, filename)
+        self._client.upload_file(filepath, settings.AWS_STORAGE_BUCKET_NAME, filename, ExtraArgs={'ACL': 'public-read'})
         return f'{settings.AWS_S3_ENDPOINT_URL}/{settings.AWS_STORAGE_BUCKET_NAME}/{filename}'
 
 
