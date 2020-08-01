@@ -8,11 +8,13 @@ from flask import jsonify
 from . import settings
 from flask_restful import Resource, Api, reqparse
 from base64 import b64decode
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.debug = True
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 api = Api(app)
+CORS(app, resources={r"/api/*":{"origins":["localhost", 'smart-bins-vitb.web.app']}})
 
 def prepareNet():
 	proto_data = open(settings.MEAN_FILE, "rb").read()
