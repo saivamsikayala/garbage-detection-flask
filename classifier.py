@@ -9,7 +9,7 @@ import argparse
 import time
 from google.protobuf import text_format
 import numpy as np
-from S3utils import upload
+from S3utils import S3Connection
 import caffe
 # def gatherImages(folder,imageNames=None):
 #     images = []
@@ -94,7 +94,7 @@ def getPredictionsFor(net, mean):
                 #print('Not Garbage!')
             
             out_ = getSegmentedImage(test_image, probMap,thresh)
-            url = upload(out_)
+            url = S3Connection.upload(out_)
             #filepath = os.path.join(output_folder,
             #                        datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + '.jpg'
             #out_.save(output_folder + '/output_image.jpg')

@@ -1,7 +1,7 @@
 from boto3 import session
 import uuid
 
-class S3utils:
+class S3utils():
     AWS_ACCESS_KEY_ID = 'XUGWG5ASJKCLWYSP6FKJ'
     AWS_SECRET_ACCESS_KEY = 'T6iOjcZdINwV0mDFlOd3rOcb8asYedLxml5qlORvJPI'
     AWS_STORAGE_BUCKET_NAME = 'SIH2020'
@@ -33,3 +33,6 @@ class S3utils:
 
     def delete(self, filename):
         return self._client.delete_object(Bucket='SIH2020', Key=filename)
+
+
+S3Connection = S3utils()
