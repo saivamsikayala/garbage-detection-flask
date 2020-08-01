@@ -10,7 +10,7 @@ import time
 from google.protobuf import text_format
 import numpy as np
 from .S3utils import S3Connection
-import caffe
+
 # def gatherImages(folder,imageNames=None):
 #     images = []
 #     names = []
