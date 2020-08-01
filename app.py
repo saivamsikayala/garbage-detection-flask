@@ -4,7 +4,7 @@ from .forms import ImageForm
 from .classifier import getPredictionsFor
 from PIL import Image
 from flask import jsonify
-import settings
+from . import  ettings
 import caffe
 
 
