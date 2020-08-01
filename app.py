@@ -30,7 +30,7 @@ mean, net = prepareNet()
 class home(Resource):
 	#form = ImageForm()
 	def options (self):
-		return {'Allow' : 'PUT' }, 200, {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods' : 'PUT,GET',  "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With" }
+		return {'Allow' : 'PUT' }, 200, {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods' : 'PUT,GET',  "Access-Control-Allow-Headers": "Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, Access-Control-Allow-Origin, Access-Control-Allow-Methods" }
 
 	def post(self):
 		parser = reqparse.RequestParser()
