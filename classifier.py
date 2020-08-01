@@ -1,4 +1,4 @@
-import caffe
+
 import os
 from pylab import *
 import sys
@@ -10,7 +10,7 @@ import time
 from google.protobuf import text_format
 import numpy as np
 from S3utils import upload
-
+import caffe
 # def gatherImages(folder,imageNames=None):
 #     images = []
 #     names = []

@@ -43,6 +43,7 @@ def home():
 		#print(image_files)
 		response = getPredictionsFor(net, mean)
 		#print(filepath)
+		print(d)
 		return jsonify(d)
 	else:
 		return render_template('home.html')
