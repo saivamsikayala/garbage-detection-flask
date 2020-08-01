@@ -1,5 +1,6 @@
 from boto3 import session
 import uuid
+import io
 
 class S3utils():
     AWS_ACCESS_KEY_ID = 'XUGWG5ASJKCLWYSP6FKJ'
@@ -25,8 +26,14 @@ class S3utils():
     def getfilename(self):
         return f"smartbins/{str(uuid.uuid4())}.jpg"
 
-    def upload(self, data):
+    def toByteArray(self, image):
+        imgByteArr = io.BytesIO()
+        image.save(imgByteArr, format='JPG')
+        return imgByteArr.getvalue()
+
+    def upload(self, pilimage):
         filename = self.getfilename()
+        data = self.toByteArray(pilimage)
         self._client.put_object(ACL='public_read', Bucket='SIH2020', Key=filename, Body=data)
         return f'{S3utils.AWS_S3_ENDPOINT_URL}/{S3utils.AWS_STORAGE_BUCKET_NAME}/{filename}'
 
