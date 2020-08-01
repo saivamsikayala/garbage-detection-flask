@@ -64,7 +64,7 @@ def getSegmentedImage(test_image, probMap,thresh):
     return Image.fromarray(or_im_ar)
     
     
-def getPredictionsFor(net, mean):
+def getPredictionsFor(image_files,net, mean):
     size = 4
     thresh = 0.999
     #output_folder = 'static'

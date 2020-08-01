@@ -5,6 +5,7 @@ from classifier import getPredictionsFor
 from PIL import Image
 from flask import jsonify
 import settings
+import caffe
 
 # def pre_process(filepath) :
 # 	size=(64, 64)
@@ -33,7 +34,7 @@ def home():
 	if request.method == 'POST':
 		image_file = form.image.data
 		extension = os.path.splitext(image_file.filename)[1]
-		filepath = os.path.join(UPLOAD_FOLDER, \
+		filepath = os.path.join(settings.UPLOAD_FOLDER, \
                 datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + extension
 		image_file.save(filepath)
 		#pre_process(filepath).save(filepath)
@@ -41,7 +42,7 @@ def home():
 		image_files = []
 		image_files.append(sample)
 		#print(image_files)
-		response = getPredictionsFor(net, mean)
+		response = getPredictionsFor(image_files,net, mean)
 		#print(filepath)
 		print(d)
 		return jsonify(d)
