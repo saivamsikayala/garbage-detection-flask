@@ -6,11 +6,12 @@ from .classifier import getPredictionsFor
 from PIL import Image
 from flask import jsonify
 from . import settings
-
+from flask_restful import Resource, Api, reqparse
 
 app = Flask(__name__)
 app.debug = True
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
+api = Api(app)
 
 def prepareNet():
 	proto_data = open(settings.MEAN_FILE, "rb").read()
@@ -21,19 +22,30 @@ def prepareNet():
 
 mean, net = prepareNet()
 
-@app.route('/', methods=['GET', 'POST'])
-def home():
-	form = ImageForm()
-	if request.method == 'POST':
-		image_file = form.image.data
-		extension = os.path.splitext(image_file.filename)[1]
-		filepath = os.path.join(settings.UPLOAD_FOLDER, \
-                datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + extension
-		image_file.save(filepath)
+def home(Resource):
+	#form = ImageForm()
+	def post(self):
+		parser = reqparse.RequestParser()
+		parser.add_argument('image')
+		parser.add_argument('width', type=int)
+		parser.add_argument('height', type=int)
+		parser.add_argument('mode', type=str)
+
+
+		mode = parser['mode']
+		width = parser['width']
+		height = parser['height']
+		image_data = parser['image']
+
+		# extension = os.path.splitext(image_file.filename)[1]
+		# filepath = os.path.join(settings.UPLOAD_FOLDER, \
+		# 		datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S%f')) + extension
+		# image_file.save(filepath)
 		#pre_process(filepath).save(filepath)
-		sample = Image.open(filepath)
-		image_files = []
-		image_files.append(sample)
+		#sample = Image.open(filepath)
+		#image_files = []
+		sample = Image.frombytes(mode, (width,height), image_data, 'raw')
+		image_files.append([sample])
 		#print(image_files)
 		response = getPredictionsFor(image_files,net, mean)
 
@@ -41,9 +53,8 @@ def home():
 		#print(filepath)
 		print(response)
 		return jsonify(response)
-	else:
-		return render_template('home.html')
 
+api.add_resource(home, '/')
 
 # if __name__== "__main__":
 # 	app.run(host="0.0.0.0")

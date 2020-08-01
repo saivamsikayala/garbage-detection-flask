@@ -18,3 +18,4 @@ h5py>=2.2.1
 pydot2
 scikit-image
 boto3
+flask-restful
