@@ -1,7 +1,7 @@
 import boto3
 import uuid
 import io
-import settings
+from . import settings
 
 class S3utils():
     
