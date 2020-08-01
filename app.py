@@ -29,12 +29,13 @@ def prepareNet():
 
 mean, net = prepareNet()
 
-@crossdomain(['*'], ['POST'])
+
 class home(Resource):
 	#form = ImageForm()
 	#def options (self):
 	#	return {'Allow' : 'POST' }, 200, {'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Methods' : 'POST',  "Access-Control-Allow-Headers": "Content-Type" }
 
+	@crossdomain(['*'], ['POST'])
 	def post(self):
 		parser = reqparse.RequestParser()
 		parser.add_argument('data')
